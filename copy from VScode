@@ -1,0 +1,17 @@
+data = readmatrix('Data_nextGen_KEtesting_allresults.csv');
+time = data(:,1);
+iterations = data(1,:);
+
+% for each 10 values in the dataset
+model = zeroes(iterations-1);
+for j = 2:iterations
+    % finding for a partivular slope
+    slope = zeroes(testingLength);
+    
+    for i = 1:testingLength
+        % find a slope for every one second
+        slope(i) = (data(i,j) - data(i+1,j));
+    end
+    model(j) = mean(slope);
+end
+% save the model to a part. 
