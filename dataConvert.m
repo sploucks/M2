@@ -8,17 +8,22 @@ model_C_vnot = vnotCalculate(42, data);
 model_D_vnot = vnotCalculate(62, data);
 model_E_vnot = vnotCalculate(82, data);
 % print function below here
+display(model_A_vnot);
+display(model_B_vnot);
+display(model_C_vnot);
+display(model_D_vnot);
+display(model_E_vnot);
 end
 
 function vnot = vnotCalculate(starting, data)
 % for each 10 values in the dataset
-collection = zeroes(10);
-ending = staring + 10;
+collection = zeros(10);
+ending = starting + 10;
 % look at each testing iteration
 for j = starting:ending
     % give a slope variable
     basis = 10; % this is the placement of the value to check to.
-    slope = zeroes(basis);
+    slope = zeros(basis);
     % find the slope between the two different datapoints
     original_data = data(:,starting);
     duplicate_data = data(:,starting+10);
@@ -35,7 +40,7 @@ for j = starting:ending
         slope(i-1) = (difference_second - difference_first);
     end
     % save the function.
-    collection(j) = mean(slope);
+    collection(j) = mean(slope,'all');
 end
 vnot = mean(collection);
 end
