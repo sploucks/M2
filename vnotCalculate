@@ -2,20 +2,20 @@ function vnot = vnotCalculate(starting)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ENGR 132 
 % Program Description
-%replace this text with your program description as a comment
+% replace this text with your program description as a comment
 %
 % Function Call
-%replace this text with a comment that states the function call
+% vnot = vnotCalcualte(starting)
 %
 % Input Arguments
-%replace this text with a commented list of the input arguments
+% 1. starting - 
 %
 % Output Arguments
-%replace this text with a commented list of the output arguments
+% None
 %
 % Assignment Information
 %   Assignment:     M2, Problem 1
-%   Team members:   Sofia Loucks, louckss@purdue.edu [repeat for each person]
+%   Team members:   Sofia Loucks, louckss@purdue.edu
 %                   Allison Womer, awomer@purdue.edu
 %                   Einar Pederson, ecpeders@purdue.edu
 %                   Katherine Sarafin, ksarafin@purdue.edu
