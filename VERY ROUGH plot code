@@ -1,0 +1,33 @@
+vnot; %matrix of v0
+concentration; %matrix of concentration values
+
+%Find the coefficients for linear equation
+data_coeffs = polyfit(concentration, vnot, 1);
+M_lin = coeffs_lin(1);
+B_lin = coeffs_lin(2);
+linear_fit = linspace(concentration(1), concentration(end), 100);
+log_x_fit = polyval(data_coeffs, linear_fit);
+m_model = M_lin;
+b_model = B_lin;
+
+%Calculate the predicted values
+data_ymodel = polyval(data_coeffs, concentration);
+
+%Linearize the data (not sure if we need yet)
+vnot_lin = log10(vnot);
+concentration_lin = log10(concentration);
+
+%PLOT
+figure(1)
+plot(concentration, vnot, "bd");
+title("Concentration versus V_o");
+xlabel("Substrate Concentration (mM)");
+ylabel("Reaction Velocity (mM/s)");
+grid on;
+hold on;
+
+plot(linear_fit, log_x_fit, "b-");
+hold off;
+
+%Equation
+fprintf("M = %0.2f & B = %0.2f \nThe linearized model of this data is: y = %0.2fx + %0.2f\n", M_lin, B_lin, M_lin, B_lin);
