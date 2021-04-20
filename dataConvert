@@ -1,0 +1,64 @@
+function dataConvert
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ENGR 132 
+% Program Description 
+%replace this text with your program description as a comment
+%
+% Function Call
+%replace this text with a comment that states the function call
+%
+% Input Arguments
+%replace this text with a commented list of the input arguments
+%
+% Output Arguments
+%replace this text with a commented list of the output arguments
+%
+% Assignment Information
+%   Assignment:     M2, Problem #
+%   Team member:    Name, login@purdue.edu [repeat for each person]
+%   Team ID:        ###-##
+%   Academic Integrity:
+%     [] We worked with one or more peers but our collaboration
+%        maintained academic integrity.
+%     Peers we worked with: Allison Womer, awomer@purdue.edu
+%                           Einar Pederson, ecpeders@purdue.edu
+%                           Katherine Sarafin, ksarafin@purdue.edu
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% ____________________
+%% INITIALIZATION
+
+
+%% ____________________
+%% CALCULATIONS
+
+% make calculations for the vnots of the various models.
+model_A_vnot = vnotCalculate(2);
+model_B_vnot = vnotCalculate(22);
+model_C_vnot = vnotCalculate(42);
+model_D_vnot = vnotCalculate(62);
+model_E_vnot = vnotCalculate(82);
+
+% print function below here
+display(model_A_vnot);
+display(model_B_vnot);
+display(model_C_vnot);
+display(model_D_vnot);
+display(model_E_vnot);
+end
+
+%% ____________________
+%% FORMATTED TEXT/FIGURE DISPLAYS
+
+
+
+%% ____________________
+%% RESULTS
+
+
+%% ____________________
+%% ACADEMIC INTEGRITY STATEMENT
+% We have not used source code obtained from any other unauthorized
+% source, either modified or unmodified. Neither have we provided
+% access to my code to another. The program we are submitting
+% is our own original work.
