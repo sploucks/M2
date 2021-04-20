@@ -1,0 +1,87 @@
+function vNaughts = vnaughtCalculate
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ENGR 132 
+% Program Description
+% This program will read a large data set of test data for different
+% concentrations and calculate the initial velocity for each concentration.
+%
+% Function Call
+% vnaught = vnaughtCalcualte
+%
+% Input Arguments
+% None
+%
+% Output Arguments
+% None
+%
+% Assignment Information
+%   Assignment:     M2, Problem 1
+%   Team members:   Sofia Loucks, louckss@purdue.edu
+%                   Allison Womer, awomer@purdue.edu
+%                   Einar Pederson, ecpeders@purdue.edu
+%                   Katherine Sarafin, ksarafin@purdue.edu
+%   Team ID:        009-24
+%   Academic Integrity:
+%     [] We worked with one or more peers but our collaboration
+%        maintained academic integrity.
+%     Peers we worked with: 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% ____________________
+%% INITIALIZATION
+
+% Create empty matrix for all 10 vnaught values.
+vNaughts = zeros(1,10);
+start = 2; % First column with test data.
+slopes = zeros(1,50);
+
+% Import data from file.
+all_data = readmatrix('Data_nextGen_KEtesting_allresults.csv');
+time = all_data(3:end,1);
+
+%% ____________________
+%% CALCULATIONS
+
+% Loop through each test concentration.
+for j = 1:1:10
+      
+    % Separate desired test concentration from full matrix.
+    original_data = all_data(3:end, start);
+    duplicate_data = all_data(3:end, start + 10);
+    
+    % Smooth the data before processing.
+    original_smooth = smooth(original_data(:));
+    duplicate_smooth = smooth(duplicate_data(:));
+    
+    % Find the slopes of the first 10 sets of points for each test and average them
+    for s = 1:1:50
+        
+        slope_original = (original_smooth(s+1) - original_smooth(s))/(time(s+1) - time(s));
+        slope_duplicate = (duplicate_smooth(s+1) - duplicate_smooth(s))/(time(s+1) - time(s));
+    
+        slopes(s) = (slope_original + slope_duplicate)/2;
+        
+    end
+    
+    % Assign to values vector.
+    vNaughts(j) = (mean(slopes));
+    
+    start = start + 1;
+end
+
+end
+
+%% ____________________
+%% FORMATTED TEXT/FIGURE DISPLAYS
+
+
+%% ____________________
+%% RESULTS
+
+
+%% ____________________
+%% ACADEMIC INTEGRITY STATEMENT
+% We have not used source code obtained from any other unauthorized
+% source, either modified or unmodified. Neither have we provided
+% access to my code to another. The program we are submitting
+% is our own original work.
