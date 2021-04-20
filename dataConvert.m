@@ -17,8 +17,8 @@ ending = staring + 10;
 % look at each testing iteration
 for j = starting:ending
     % give a slope variable
-    slope = 0;
     basis = 10; % this is the placement of the value to check to.
+    slope = zeroes(basis);
     % find the slope between the two different datapoints
     original_data = data(:,starting);
     duplicate_data = data(:,starting+10);
@@ -32,11 +32,10 @@ for j = starting:ending
         % find t 
         difference_second = (original_smooth(i+1) - duplicate_smooth(i+1));
         % find the slope
-        slope = slope + (difference_second - difference_first);
+        slope(i-1) = (difference_second - difference_first);
     end
-    slope = slope / (basis-1);
     % save the function.
-    collection(j) = slope;
+    collection(j) = mean(slope);
 end
 vnot = mean(collection);
 end
