@@ -59,7 +59,7 @@ for j = starting:ending
         % find t
         difference_second = (original_smooth(i+1) - duplicate_smooth(i+1));
         % find the slope
-        slope(i-1) = (difference_second - difference_first);
+        slope(i-1) = abs(difference_second - difference_first);
     end
     
     % save the function
