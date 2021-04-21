@@ -31,9 +31,9 @@ function vNaughts = vnaughtCalculate
 %% INITIALIZATION
 
 % Create empty matrix for all 10 vnaught values.
-vNaughts = zeros(1,10);
-start = 2; % First column with test data.
+vNaughts = zeros(5,10);
 slopes = zeros(1,50);
+row = 1;
 
 % Import data from file.
 all_data = readmatrix('Data_nextGen_KEtesting_allresults.csv');
@@ -42,42 +42,61 @@ time = all_data(3:end,1);
 %% ____________________
 %% CALCULATIONS
 
-% Loop through each test concentration.
-for j = 1:1:10
-      
-    % Separate desired test concentration from full matrix.
-    original_data = all_data(3:end, start);
-    duplicate_data = all_data(3:end, start + 10);
+% Loop through each enzyme type.
+
+for e = 2:20:82
+    start = e; % First column with test data.
     
-    % Smooth the data before processing.
-    original_smooth = smooth(original_data(:));
-    duplicate_smooth = smooth(duplicate_data(:));
+    % Loop through each test concentration.
+    for j = 1:1:10
     
-    % Find the slopes of the first 10 sets of points for each test and average them
-    for s = 1:1:50
+        % Separate desired test concentration from full matrix.
+        original_data = all_data(3:end, start);
+        duplicate_data = all_data(3:end, start + 10);
+    
+        % Smooth the data before processing.
+        original_smooth = smooth(original_data(:));
+        duplicate_smooth = smooth(duplicate_data(:));
+    
+        % Find the slopes of the first 10 sets of points for each test and average them
+        for s = 1:1:50
         
-        slope_original = (original_smooth(s+1) - original_smooth(s))/(time(s+1) - time(s));
-        slope_duplicate = (duplicate_smooth(s+1) - duplicate_smooth(s))/(time(s+1) - time(s));
+            slope_original = (original_smooth(s+1) - original_smooth(s))/(time(s+1) - time(s));
+            slope_duplicate = (duplicate_smooth(s+1) - duplicate_smooth(s))/(time(s+1) - time(s));
     
-        slopes(s) = (slope_original + slope_duplicate)/2;
+            slopes(s) = (slope_original + slope_duplicate)/2;
+        
+        end
+    
+        % Assign to values vector.
+        vNaughts(row, j) = (mean(slopes));
+    
+        start = start + 1;
         
     end
     
-    % Assign to values vector.
-    vNaughts(j) = (mean(slopes));
-    
-    start = start + 1;
-end
-
+    row = row + 1;
 end
 
 %% ____________________
 %% FORMATTED TEXT/FIGURE DISPLAYS
 
+disp("Each row represents a specific enyzme (A through D). Each column represents a specific test (1 through 10)."); 
+
+end
 
 %% ____________________
 %% RESULTS
 
+% Each row represents a specific enyzme (A through D). Each column represents a specific test (1 through 10).
+% 
+% ans =
+% 
+%     0.0217    0.0431    0.0789    0.1581    0.2734    0.4169    0.5865    0.7146    0.8340    0.8942
+%     0.0093    0.0184    0.0363    0.0710    0.1343    0.2260    0.3597    0.5180    0.7030    0.7253
+%     0.0226    0.0444    0.0856    0.1603    0.3007    0.4747    0.6880    0.8920    1.0284    1.1347
+%     0.0196    0.0375    0.0734    0.1437    0.2832    0.4655    0.7305    1.0053    1.2612    1.4180
+%     0.0329    0.0638    0.1249    0.2134    0.4309    0.6712    0.9696    1.2340    1.4169    1.5501
 
 %% ____________________
 %% ACADEMIC INTEGRITY STATEMENT
