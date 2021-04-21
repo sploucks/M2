@@ -1,0 +1,166 @@
+function vNaughts = vnaughtCalculate
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ % ENGR 132 
+ % Program Description
+ % This program will read a large data set of test data for different
+ % concentrations and calculate the initial velocity for each concentration.
+ %
+ % Function Call
+ % vnaught = vnaughtCalculate
+ %
+ % Input Arguments
+ % None
+ %
+ % Output Arguments
+ % None
+ %
+ % Assignment Information
+ %   Assignment:     M2, Problem 1
+ %   Team members:   Sofia Loucks, louckss@purdue.edu
+ %                   Allison Womer, awomer@purdue.edu
+ %                   Einar Pederson, ecpeders@purdue.edu
+ %                   Katherine Sarafin, ksarafin@purdue.edu
+ %   Team ID:        009-24
+ %   Academic Integrity:
+ %     [] We worked with one or more peers but our collaboration
+ %        maintained academic integrity.
+ %     Peers we worked with: 
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ %% ____________________
+ %% INITIALIZATION
+
+ % Create empty matrix for all 10 vnaught values.
+ vNaughts = zeros(1,10);
+ start = 2; % First column with test data.
+ slopes = zeros(1,50);
+
+ % Import data from file.
+ all_data = readmatrix('Data_nextGen_KEtesting_allresults.csv');
+ time = all_data(3:end,1);
+ concentration = [3.75, 7.5, 15, 30, 65, 125, 250, 500, 1000, 2000];
+ %% ____________________
+ %% CALCULATIONS
+
+ % Loop through each test concentration.
+ for j = 1:1:10
+
+     % Separate desired test concentration from full matrix.
+     original_data = all_data(3:end, start);
+     duplicate_data = all_data(3:end, start + 10);
+
+     % Smooth the data before processing.
+     original_smooth = smooth(original_data(:));
+     duplicate_smooth = smooth(duplicate_data(:));
+
+     % Find the slopes of the first 10 sets of points for each test and average them
+     for s = 1:1:50
+
+         slope_original = (original_smooth(s+1) - original_smooth(s))/(time(s+1) - time(s));
+         slope_duplicate = (duplicate_smooth(s+1) - duplicate_smooth(s))/(time(s+1) - time(s));
+
+         slopes(s) = (slope_original + slope_duplicate)/2;
+
+     end
+
+     % Assign to values vector.
+     vNaughts(j) = (mean(slopes));
+
+     start = start + 1;
+ end
+
+ %Linearizing the axes
+ concentration_lin = log10(concentration);
+ vNaughts_lin = log10(vNaughts);
+
+
+ %% ____________________
+ %% FORMATTED TEXT/FIGURE DISPLAYS
+ 
+%%% DATA LINEARIZATION & MODEL
+coeffs = polyfit(concentration, vNaughts, 1);
+coeffs_lin = polyfit(concentration_lin, vNaughts_lin, 1);
+M_lin = coeffs_lin(1);
+B_lin = coeffs_lin(2);
+M = coeffs(1);
+M_model = M_lin;
+B_model = 10^(B_lin);
+B_model_log = B_lin;
+linear_x_fit = linspace(concentration_lin(1), concentration_lin(end), 100);
+linear_y_fit = linspace(vNaughts(1), vNaughts(end), 100);
+log_x_fit = polyval(coeffs_lin, linear_x_fit);
+ymodel_pow = B_model * concentration.^(M_model);
+ymodel_log = (M_model) * log(concentration) + B_model_log;
+
+%%PLOT
+% Concentration versus Vnaught (not linearized)
+figure(1)
+plot(concentration, vNaughts, "bd");
+title("Enzyme Substrate Concentration versus their Reaction Velocity");
+xlabel("Substrate Concentration (mM)");
+ylabel("Reaction Velocity (mM/s)");
+grid on;
+hold on;
+
+plot(concentration, ymodel_log, "b-");
+legend("original data", "modeled equation", "location", "best");
+hold off;
+%test graphs to determine a better line of fit
+
+%logarithmic x, logarithmic y (POWER)
+figure(2);
+plot(concentration_lin, vNaughts_lin, "bd");
+title("Enzyme Substrate Concentration versus their Reaction Velocity LINEARIZED (power)");
+xlabel("concentration (logarithmic)");
+ylabel("vNaughts (logarithmic)");
+grid on;
+hold on;
+
+plot(linear_x_fit, log_x_fit, "b-");
+legend("original data", "modeled equation", "location", "best");
+hold off;
+
+%%% TEXT DISPLAY - POWER
+fprintf("The data is best modeled by a power function.\n");
+fprintf("M = %0.2f & B = %0.2f \nThe linearized model of this data is: y = %0.2fx + %0.2f\n", M_lin, B_model, M_lin, B_model);
+
+% EADIE HOFSTEE BURK EQUATION USING POWER LINEARIZED EQUATION
+% EADIE HOFSTEE: Vnaught = Vmax - Km (Vnaught / Substrate)
+% Vnaught = y variable
+% Vmax = y intercept (B)
+% -Km = slope (- M)
+% (Vnaught / Substrate) = x variable
+fprintf("Vmax = %0.2f\n", B_model);
+fprintf("Km = %0.2f\n", M_lin);
+
+%LOGARITHMIC!
+%logarithmic x, linear y
+figure(3);
+plot(concentration_lin, vNaughts, "bd");
+title("Enzyme Substrate Concentration versus their Reaction Velocity LINEARIZED (logarithmic)");
+xlabel("concentration (logarithmic)");
+ylabel("vNaughts (linear)");
+grid on;
+hold on;
+
+%line of best fit
+%plot(ymodel_log, concentration_lin, "b-");
+%legend("original data", "modeled equation", "location", "best");
+plot(linear_x_fit, linear_y_fit, "b-");
+legend("original data", "modeled equation", "location", "best");
+hold off;
+
+%%% TEXT DISPLAY - LOGARITHMIC 
+fprintf("The data is best modeled by a logarithmic function.\n");
+fprintf("M = %0.2f & B = %0.2f \nThe linearized model of this data is: y = %0.2fx + %0.2f\n", M_lin, B_model_log, M_lin, B_model_log);
+
+ %% ____________________
+ %% RESULTS
+
+
+ %% ____________________
+ %% ACADEMIC INTEGRITY STATEMENT
+ % We have not used source code obtained from any other unauthorized
+ % source, either modified or unmodified. Neither have we provided
+ % access to my code to another. The program we are submitting
+ % is our own original work.
